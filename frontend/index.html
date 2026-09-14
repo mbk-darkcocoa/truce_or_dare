@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>truce_or_dare platform scaffold</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">VR storefront + operations MVP</p>
+        <h1>Launch the platform from one control surface.</h1>
+        <p class="lede">
+          This scaffold combines the first public surfaces for catalog discovery, lobby access,
+          support intake, admin operations, and workbook-guided delivery.
+        </p>
+      </div>
+      <section class="card session-card">
+        <h2>Account access</h2>
+        <form id="session-form" class="stack compact">
+          <label>
+            Display name
+            <input name="displayName" type="text" maxlength="60" placeholder="Operator Vega" required />
+          </label>
+          <label>
+            Access mode
+            <select name="accessMode">
+              <option value="guest">Guest</option>
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+          <label>
+            Admin code
+            <input name="adminCode" type="password" placeholder="Needed only for admin access" />
+          </label>
+          <button type="submit">Create session</button>
+        </form>
+        <p id="session-status" class="status">No session yet.</p>
+      </section>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2>Device support posture</h2>
+        <ul id="device-facts" class="fact-list"></ul>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <div class="section-heading">
+            <h2>Storefront</h2>
+            <span class="badge">Public</span>
+          </div>
+          <div id="catalog-list" class="stack"></div>
+        </article>
+
+        <article class="card">
+          <div class="section-heading">
+            <h2>Forum &amp; lobby</h2>
+            <span class="badge">Community</span>
+          </div>
+          <div id="lobby-list" class="stack"></div>
+        </article>
+
+        <article class="card">
+          <div class="section-heading">
+            <h2>Support desk</h2>
+            <span class="badge">Operations</span>
+          </div>
+          <div id="article-list" class="stack compact"></div>
+          <form id="ticket-form" class="stack compact">
+            <label>
+              Category
+              <select name="category">
+                <option value="account">Account</option>
+                <option value="catalog">Catalog</option>
+                <option value="support">Support</option>
+                <option value="compliance">Compliance</option>
+              </select>
+            </label>
+            <label>
+              Contact email
+              <input name="contactEmail" type="email" placeholder="team@example.com" />
+            </label>
+            <label>
+              Subject
+              <input name="subject" type="text" maxlength="120" required />
+            </label>
+            <label>
+              Issue
+              <textarea name="message" rows="4" maxlength="1200" required></textarea>
+            </label>
+            <button type="submit">Submit support ticket</button>
+          </form>
+          <p id="ticket-status" class="status">Sign in to submit a support request.</p>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <div class="section-heading">
+            <h2>Admin console</h2>
+            <span class="badge accent">Restricted</span>
+          </div>
+          <div id="admin-summary" class="stack compact">
+            <p class="status">Admin metrics will appear after an admin session is created.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="section-heading">
+            <h2>Workbook</h2>
+            <span class="badge">Guided</span>
+          </div>
+          <div id="workbook-list" class="stack compact"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

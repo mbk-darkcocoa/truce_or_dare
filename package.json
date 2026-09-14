@@ -1,0 +1,22 @@
+{
+  "name": "truce_or_dare",
+  "version": "1.0.0",
+  "description": "MVP platform scaffold for a VR storefront, lobby, support desk, admin console, and workbook",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "test": "node --test",
+    "check": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://localhost:26831/mbk-darkcocoa/truce_or_dare"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20"
+  }
+}

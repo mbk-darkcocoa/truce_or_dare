@@ -1,0 +1,14 @@
+[Unit]
+Description=truce_or_dare platform scaffold
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/truce_or_dare
+EnvironmentFile=/opt/truce_or_dare/.env
+ExecStart=/usr/bin/env npm start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
