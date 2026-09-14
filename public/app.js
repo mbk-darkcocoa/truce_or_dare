@@ -2,6 +2,10 @@ const summaryEl = document.querySelector("#summary");
 const flashEl = document.querySelector("#flash");
 const currentUserEl = document.querySelector("#current-user");
 const liveStatusEl = document.querySelector("#live-status");
+const ironcladStatusEl = document.querySelector("#ironclad-status");
+const ironcladTelemetryEl = document.querySelector("#ironclad-telemetry");
+const ironcladEventsEl = document.querySelector("#ironclad-events");
+const chatFeedEl = document.querySelector("#chat-feed");
 const knownUsersEl = document.querySelector("#known-users");
 const receivedInvitesEl = document.querySelector("#received-invites");
 const sentInvitesEl = document.querySelector("#sent-invites");
@@ -10,6 +14,8 @@ const recentSessionsEl = document.querySelector("#recent-sessions");
 
 const loginForm = document.querySelector("#login-form");
 const profileForm = document.querySelector("#profile-form");
+const ironcladForm = document.querySelector("#ironclad-form");
+const chatForm = document.querySelector("#chat-form");
 const sessionForm = document.querySelector("#session-form");
 const targetUserForm = document.querySelector("#target-user-form");
 const inviteForm = document.querySelector("#invite-form");
@@ -73,6 +79,69 @@ function renderSummary(summary) {
     <article class="stat card"><strong>${summary.pendingInvites}</strong><span>pending invites</span></article>
     <article class="stat card"><strong>${summary.connections}</strong><span>connections</span></article>
   `;
+}
+
+function renderIronclad(ironclad) {
+  if (!ironclad) {
+    ironcladStatusEl.textContent = "Standby";
+    ironcladStatusEl.classList.remove("online");
+    ironcladTelemetryEl.innerHTML = "";
+    ironcladEventsEl.classList.add("muted");
+    ironcladEventsEl.textContent = "No Ironclad activity yet.";
+    return;
+  }
+
+  ironcladStatusEl.textContent = ironclad.systemStatus;
+  ironcladStatusEl.classList.toggle("online", ironclad.systemStatus === "active");
+  ironcladTelemetryEl.innerHTML = `
+    <article class="stat card"><strong>${ironclad.telemetry.users}</strong><span>users</span></article>
+    <article class="stat card"><strong>${ironclad.telemetry.onlineUsers}</strong><span>online</span></article>
+    <article class="stat card"><strong>${ironclad.telemetry.openSessions}</strong><span>sessions</span></article>
+    <article class="stat card"><strong>${ironclad.telemetry.chatMessages}</strong><span>chat lines</span></article>
+  `;
+
+  if (!ironclad.recentEvents.length) {
+    ironcladEventsEl.classList.add("muted");
+    ironcladEventsEl.textContent = "No Ironclad activity yet.";
+    return;
+  }
+
+  ironcladEventsEl.classList.remove("muted");
+  ironcladEventsEl.innerHTML = ironclad.recentEvents
+    .map(
+      (event) => `
+        <div class="item">
+          <div>
+            <strong>${escapeHtml(event.actorHandle)}</strong>
+            <p>${escapeHtml(event.summary)}</p>
+            <p class="muted">${escapeHtml(event.type)}</p>
+          </div>
+        </div>
+      `,
+    )
+    .join("");
+}
+
+function renderChatMessages(messages) {
+  if (!messages.length) {
+    chatFeedEl.classList.add("muted");
+    chatFeedEl.textContent = "No chat messages yet.";
+    return;
+  }
+
+  chatFeedEl.classList.remove("muted");
+  chatFeedEl.innerHTML = messages
+    .map(
+      (message) => `
+        <div class="item">
+          <div>
+            <strong>${escapeHtml(message.user?.handle || "unknown")}</strong>
+            <p>${escapeHtml(message.body)}</p>
+          </div>
+        </div>
+      `,
+    )
+    .join("");
 }
 
 function renderCurrentUser(user) {
@@ -244,6 +313,8 @@ function attachInviteActions() {
 
 function render(state) {
   renderSummary(state.summary);
+  renderIronclad(state.ironclad);
+  renderChatMessages(state.chatMessages || []);
   renderCurrentUser(state.currentUser);
   renderKnownUsers(state.knownUsers || []);
   renderInvites(receivedInvitesEl, state.receivedInvites || [], "No received invites.", "Accept");
@@ -303,6 +374,40 @@ profileForm.addEventListener("submit", async (event) => {
     });
     render(state);
     setFlash("Profile updated.");
+  } catch (error) {
+    setFlash(error.message, true);
+  }
+});
+
+chatForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  clearFlash();
+  try {
+    const formData = new FormData(chatForm);
+    const state = await api("/api/chat-messages", {
+      method: "POST",
+      body: Object.fromEntries(formData.entries()),
+    });
+    render(state);
+    chatForm.reset();
+    setFlash("Chat message sent.");
+  } catch (error) {
+    setFlash(error.message, true);
+  }
+});
+
+ironcladForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  clearFlash();
+  try {
+    const formData = new FormData(ironcladForm);
+    const state = await api("/api/ironclad/beacons", {
+      method: "POST",
+      body: Object.fromEntries(formData.entries()),
+    });
+    render(state);
+    ironcladForm.reset();
+    setFlash("Ironclad beacon raised.");
   } catch (error) {
     setFlash(error.message, true);
   }

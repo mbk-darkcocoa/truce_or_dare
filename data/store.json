@@ -1,50 +1,95 @@
 {
   "users": [
     {
-      "id": "94a99b49-1b8b-4545-b184-772d2e03025d",
+      "id": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
       "displayName": "Ting",
       "handle": "@ting",
       "email": "ting@example.com",
       "bio": "",
-      "createdAt": "2026-09-14T09:50:34.256Z",
-      "updatedAt": "2026-09-14T09:50:34.271Z",
-      "lastActiveAt": "2026-09-14T09:50:34.271Z"
+      "createdAt": "2026-09-14T09:52:30.312Z",
+      "updatedAt": "2026-09-14T09:52:30.336Z",
+      "lastActiveAt": "2026-09-14T09:52:30.336Z"
     },
     {
-      "id": "86cd463e-2c75-47dd-86e5-38f251f754ac",
+      "id": "6a4dcb46-fdcb-45ed-b7c0-8f83661a41a8",
       "displayName": "Glenn",
       "handle": "@glenn",
       "email": "glenn@example.com",
       "bio": "",
-      "createdAt": "2026-09-14T09:50:34.266Z",
-      "updatedAt": "2026-09-14T09:50:34.279Z",
-      "lastActiveAt": "2026-09-14T09:50:34.279Z"
+      "createdAt": "2026-09-14T09:52:30.323Z",
+      "updatedAt": "2026-09-14T09:52:30.345Z",
+      "lastActiveAt": "2026-09-14T09:52:30.345Z"
     }
   ],
   "invites": [
     {
-      "id": "65252892-4471-4336-917f-7bece2e90882",
-      "senderUserId": "94a99b49-1b8b-4545-b184-772d2e03025d",
+      "id": "50717631-af7a-4288-a98b-94f9a7df0988",
+      "senderUserId": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
       "recipientType": "email",
       "recipientValue": "glenn@example.com",
       "message": "Please test the local flow.",
       "consentConfirmed": true,
       "status": "accepted",
-      "createdAt": "2026-09-14T09:50:34.267Z",
-      "acceptedByUserId": "86cd463e-2c75-47dd-86e5-38f251f754ac",
-      "updatedAt": "2026-09-14T09:50:34.279Z"
+      "createdAt": "2026-09-14T09:52:30.323Z",
+      "acceptedByUserId": "6a4dcb46-fdcb-45ed-b7c0-8f83661a41a8",
+      "updatedAt": "2026-09-14T09:52:30.345Z"
     }
   ],
   "connections": [
     {
-      "id": "53307357-a9b7-4db6-ace4-5fb35a975074",
+      "id": "56577f14-08b4-42b5-aee3-ad33e1aef20c",
       "userIds": [
-        "94a99b49-1b8b-4545-b184-772d2e03025d",
-        "86cd463e-2c75-47dd-86e5-38f251f754ac"
+        "322b4ce7-efc3-486d-94ad-0e46812fdffc",
+        "6a4dcb46-fdcb-45ed-b7c0-8f83661a41a8"
       ],
-      "sourceInviteId": "65252892-4471-4336-917f-7bece2e90882",
-      "createdAt": "2026-09-14T09:50:34.279Z"
+      "sourceInviteId": "50717631-af7a-4288-a98b-94f9a7df0988",
+      "createdAt": "2026-09-14T09:52:30.345Z"
     }
   ],
-  "gameSessions": []
+  "gameSessions": [],
+  "chatMessages": [
+    {
+      "id": "aa862aae-ab93-4c92-b8d9-be285aaa80c1",
+      "userId": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
+      "body": "Ironclad chat ready for Glenn.",
+      "createdAt": "2026-09-14T09:52:30.331Z"
+    }
+  ],
+  "ironcladEvents": [
+    {
+      "id": "611add0f-7406-42b9-8f4b-fa7114c8bd9d",
+      "type": "invite.accepted",
+      "actorUserId": "6a4dcb46-fdcb-45ed-b7c0-8f83661a41a8",
+      "summary": "Accepted invite from @ting",
+      "createdAt": "2026-09-14T09:52:30.345Z"
+    },
+    {
+      "id": "c89a3242-1b76-4aff-9d50-530c983dbe14",
+      "type": "ironclad.beacon",
+      "actorUserId": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
+      "summary": "Ops pulse: Ready for tester handoff.",
+      "createdAt": "2026-09-14T09:52:30.336Z"
+    },
+    {
+      "id": "de13e56c-1931-450f-95ec-557f3af33630",
+      "type": "chat.message",
+      "actorUserId": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
+      "summary": "Posted Ironclad chat: Ironclad chat ready for Glenn.",
+      "createdAt": "2026-09-14T09:52:30.331Z"
+    },
+    {
+      "id": "f471b1f4-8010-4005-b8ec-350ea6b57493",
+      "type": "target.saved",
+      "actorUserId": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
+      "summary": "Saved target user @glenn",
+      "createdAt": "2026-09-14T09:52:30.323Z"
+    },
+    {
+      "id": "bc249860-bd16-4b03-816e-2de7d5421261",
+      "type": "invite.created",
+      "actorUserId": "322b4ce7-efc3-486d-94ad-0e46812fdffc",
+      "summary": "Created email invite for glenn@example.com",
+      "createdAt": "2026-09-14T09:52:30.323Z"
+    }
+  ]
 }

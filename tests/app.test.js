@@ -4,7 +4,9 @@ const assert = require("node:assert/strict");
 const {
   acceptInvite,
   buildDashboard,
+  createChatMessage,
   createGameSession,
+  createIroncladBeacon,
   createInvite,
   createTargetUser,
   ensureState,
@@ -16,7 +18,14 @@ const {
 } = require("../lib/app");
 
 function createState() {
-  return ensureState({ users: [], invites: [], connections: [], gameSessions: [] });
+  return ensureState({
+    users: [],
+    invites: [],
+    connections: [],
+    gameSessions: [],
+    chatMessages: [],
+    ironcladEvents: [],
+  });
 }
 
 test("normalizeHandle lowercases and adds prefix", () => {
@@ -185,4 +194,20 @@ test("createGameSession validates the minimal session shape", () => {
 
   assert.equal(state.gameSessions.length, 1);
   assert.equal(session.hostUserId, user.id);
+});
+
+test("createChatMessage and createIroncladBeacon update dashboard telemetry", () => {
+  const state = createState();
+  const user = upsertUser(state, { displayName: "Ting", handle: "ting", email: "" });
+
+  createChatMessage(state, user.id, { body: "Ironclad chat is online." });
+  createIroncladBeacon(state, user.id, { label: "Ops pulse", detail: "All systems green." });
+
+  const dashboard = buildDashboard(state, user.id);
+
+  assert.equal(state.chatMessages.length, 1);
+  assert.equal(dashboard.chatMessages[0].body, "Ironclad chat is online.");
+  assert.equal(dashboard.ironclad.name, "Ironclad");
+  assert.equal(dashboard.ironclad.telemetry.chatMessages, 1);
+  assert.equal(dashboard.ironclad.recentEvents[0].type, "ironclad.beacon");
 });

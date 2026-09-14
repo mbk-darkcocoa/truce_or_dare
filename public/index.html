@@ -34,6 +34,43 @@
 
       <section class="stats" id="summary"></section>
 
+      <section class="grid ironclad-grid">
+        <article class="card ironclad-card">
+          <div class="ironclad-header">
+            <div>
+              <p class="eyebrow">Super computer command center</p>
+              <h2>Ironclad</h2>
+            </div>
+            <p id="ironclad-status" class="status-pill">Standby</p>
+          </div>
+          <div id="ironclad-telemetry" class="stats compact-stats"></div>
+          <form id="ironclad-form" class="stack">
+            <label>
+              Beacon label
+              <input name="label" maxlength="40" placeholder="Ops pulse" required />
+            </label>
+            <label>
+              Beacon detail
+              <textarea name="detail" maxlength="240" rows="3" placeholder="What should operators know?" required></textarea>
+            </label>
+            <button type="submit">Raise Ironclad beacon</button>
+          </form>
+          <div id="ironclad-events" class="stack muted">No Ironclad activity yet.</div>
+        </article>
+
+        <article class="card">
+          <h2>Ops chat</h2>
+          <form id="chat-form" class="stack">
+            <label>
+              Message
+              <textarea name="body" maxlength="280" rows="3" placeholder="Coordinate testing, invites, and session moves." required></textarea>
+            </label>
+            <button type="submit">Send message</button>
+          </form>
+          <div id="chat-feed" class="stack muted">No chat messages yet.</div>
+        </article>
+      </section>
+
       <section class="grid">
         <article class="card">
           <h2>1. Sign in</h2>

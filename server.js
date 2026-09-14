@@ -5,7 +5,9 @@ const crypto = require("node:crypto");
 
 const {
   buildDashboard,
+  createChatMessage,
   createGameSession,
+  createIroncladBeacon,
   createInvite,
   createTargetUser,
   ensureState,
@@ -228,6 +230,36 @@ async function handleApi(req, res, url) {
     const payload = await parseJsonBody(req);
     const dashboard = mutateState((state) => {
       createGameSession(state, user.id, payload);
+      return buildDashboard(state, user.id);
+    });
+    sendJson(res, 201, dashboard);
+    return true;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/chat-messages") {
+    const user = requireUser(req, res);
+    if (!user) {
+      return true;
+    }
+
+    const payload = await parseJsonBody(req);
+    const dashboard = mutateState((state) => {
+      createChatMessage(state, user.id, payload);
+      return buildDashboard(state, user.id);
+    });
+    sendJson(res, 201, dashboard);
+    return true;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/ironclad/beacons") {
+    const user = requireUser(req, res);
+    if (!user) {
+      return true;
+    }
+
+    const payload = await parseJsonBody(req);
+    const dashboard = mutateState((state) => {
+      createIroncladBeacon(state, user.id, payload);
       return buildDashboard(state, user.id);
     });
     sendJson(res, 201, dashboard);

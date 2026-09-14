@@ -11,6 +11,9 @@ Truce or Dare is a small MVP for starting lightweight social game sessions and c
 - lets matching signed-in users accept pending invites
 - shows online tester presence through background sync
 - prepares copyable GitHub-ready nudges for handle-based invites
+- includes an ops chat surface for live coordination
+- includes an Ironclad command center with telemetry and beacons
+- includes Terraform deployment metadata under `/home/runner/work/truce_or_dare/truce_or_dare/terraform`
 
 This MVP does **not** send real emails or contact third parties automatically. It stores pending invites locally so the flow can be reviewed safely before any real integration work.
 
@@ -35,12 +38,24 @@ npm test
 npm run dev
 ```
 
+## Terraform
+
+```bash
+cd /home/runner/work/truce_or_dare/truce_or_dare/terraform
+terraform init
+terraform validate
+terraform plan -var="public_url=http://localhost:3000"
+```
+
+The Terraform files expose deployment metadata and Ironclad configuration for handoff into a fuller infrastructure stack.
+
 ## Project structure
 
 - `/home/runner/work/truce_or_dare/truce_or_dare/server.js` - HTTP server and API routing
 - `/home/runner/work/truce_or_dare/truce_or_dare/lib/app.js` - core domain logic
 - `/home/runner/work/truce_or_dare/truce_or_dare/lib/store.js` - JSON persistence
 - `/home/runner/work/truce_or_dare/truce_or_dare/public/` - frontend assets
+- `/home/runner/work/truce_or_dare/truce_or_dare/terraform/` - Terraform deployment metadata
 - `/home/runner/work/truce_or_dare/truce_or_dare/tests/` - unit tests
 
 ## Notes

@@ -6,10 +6,17 @@ const path = require("node:path");
 const { STORE_PATH, saveState } = require("../lib/store");
 
 function resetStore() {
-  saveState({ users: [], invites: [], connections: [], gameSessions: [] });
+  saveState({
+    users: [],
+    invites: [],
+    connections: [],
+    gameSessions: [],
+    chatMessages: [],
+    ironcladEvents: [],
+  });
 }
 
-test("server supports login, presence, target user creation, and invite acceptance", async () => {
+test("server supports login, presence, target user creation, chat, beacons, and invite acceptance", async () => {
   resetStore();
   const serverPath = require.resolve(path.join(__dirname, "..", "server.js"));
   delete require.cache[serverPath];
@@ -67,6 +74,36 @@ test("server supports login, presence, target user creation, and invite acceptan
     assert.equal(presenceState.currentUser.isOnline, true);
     assert.equal(presenceState.knownUsers[0].isOnline, false);
 
+    const chatResponse = await fetch(`${baseUrl}/api/chat-messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        cookie,
+      },
+      body: JSON.stringify({
+        body: "Ironclad chat ready for Glenn.",
+      }),
+    });
+    assert.equal(chatResponse.status, 201);
+    const chatState = await chatResponse.json();
+    assert.equal(chatState.chatMessages.length, 1);
+    assert.equal(chatState.ironclad.telemetry.chatMessages, 1);
+
+    const beaconResponse = await fetch(`${baseUrl}/api/ironclad/beacons`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        cookie,
+      },
+      body: JSON.stringify({
+        label: "Ops pulse",
+        detail: "Ready for tester handoff.",
+      }),
+    });
+    assert.equal(beaconResponse.status, 201);
+    const beaconState = await beaconResponse.json();
+    assert.equal(beaconState.ironclad.recentEvents[0].type, "ironclad.beacon");
+
     const glennLoginResponse = await fetch(`${baseUrl}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -93,6 +130,8 @@ test("server supports login, presence, target user creation, and invite acceptan
 
     const storedState = JSON.parse(fs.readFileSync(STORE_PATH, "utf8"));
     assert.equal(storedState.connections.length, 1);
+    assert.equal(storedState.chatMessages.length, 1);
+    assert.equal(storedState.ironcladEvents.length >= 1, true);
   } finally {
     await new Promise((resolve, reject) => {
       server.close((error) => (error ? reject(error) : resolve()));
