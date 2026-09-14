@@ -136,5 +136,6 @@ test("server supports login, presence, target user creation, chat, beacons, and 
     await new Promise((resolve, reject) => {
       server.close((error) => (error ? reject(error) : resolve()));
     });
+    resetStore();
   }
 });
