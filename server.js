@@ -196,23 +196,23 @@ async function handleApi(req, res, url) {
       return true;
     }
 
-    if (req.method === "POST" && url.pathname === "/api/presence") {
-      const user = requireUser(req, res);
-      if (!user) {
-        return true;
-      }
-
-      const dashboard = mutateState((state) => {
-        touchUser(state, user.id);
-        return buildDashboard(state, user.id);
-      });
-      sendJson(res, 200, dashboard);
-      return true;
-    }
-
     const payload = await parseJsonBody(req);
     const dashboard = mutateState((state) => {
       updateProfile(state, user.id, payload);
+      return buildDashboard(state, user.id);
+    });
+    sendJson(res, 200, dashboard);
+    return true;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/presence") {
+    const user = requireUser(req, res);
+    if (!user) {
+      return true;
+    }
+
+    const dashboard = mutateState((state) => {
+      touchUser(state, user.id);
       return buildDashboard(state, user.id);
     });
     sendJson(res, 200, dashboard);
@@ -318,6 +318,12 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`Truce or Dare running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`Truce or Dare running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = {
+  server,
+};

@@ -112,6 +112,7 @@ test("createTargetUser can also attempt a connection", () => {
 
   assert.equal(target.handle, "@glenn");
   assert.equal(state.users.length, 2);
+  assert.equal(target.lastActiveAt, null);
   assert.equal(state.invites.length, 1);
   assert.equal(state.invites[0].recipientType, "email");
 });

@@ -1,6 +1,50 @@
 {
-  "users": [],
-  "invites": [],
-  "connections": [],
+  "users": [
+    {
+      "id": "2a98b51d-0ba3-4d6c-9466-f99b4f13c50b",
+      "displayName": "Ting",
+      "handle": "@ting",
+      "email": "ting@example.com",
+      "bio": "",
+      "createdAt": "2026-09-14T09:47:34.863Z",
+      "updatedAt": "2026-09-14T09:47:34.877Z",
+      "lastActiveAt": "2026-09-14T09:47:34.877Z"
+    },
+    {
+      "id": "f052ac93-c31c-4248-9031-51492c6b3c67",
+      "displayName": "Glenn",
+      "handle": "@glenn",
+      "email": "glenn@example.com",
+      "bio": "",
+      "createdAt": "2026-09-14T09:47:34.873Z",
+      "updatedAt": "2026-09-14T09:47:34.884Z",
+      "lastActiveAt": "2026-09-14T09:47:34.884Z"
+    }
+  ],
+  "invites": [
+    {
+      "id": "689bc508-1752-4177-a65f-19eee9a27f1a",
+      "senderUserId": "2a98b51d-0ba3-4d6c-9466-f99b4f13c50b",
+      "recipientType": "email",
+      "recipientValue": "glenn@example.com",
+      "message": "Please test the local flow.",
+      "consentConfirmed": true,
+      "status": "accepted",
+      "createdAt": "2026-09-14T09:47:34.873Z",
+      "acceptedByUserId": "f052ac93-c31c-4248-9031-51492c6b3c67",
+      "updatedAt": "2026-09-14T09:47:34.884Z"
+    }
+  ],
+  "connections": [
+    {
+      "id": "491da72b-2a3c-49f8-b4cb-1a7edd7c1257",
+      "userIds": [
+        "2a98b51d-0ba3-4d6c-9466-f99b4f13c50b",
+        "f052ac93-c31c-4248-9031-51492c6b3c67"
+      ],
+      "sourceInviteId": "689bc508-1752-4177-a65f-19eee9a27f1a",
+      "createdAt": "2026-09-14T09:47:34.884Z"
+    }
+  ],
   "gameSessions": []
 }

@@ -261,18 +261,18 @@ async function refresh(message) {
   } else {
     clearFlash();
   }
+}
 
-  async function syncPresence() {
-    try {
-      const state = await api("/api/presence", { method: "POST" });
-      render(state);
-    } catch (error) {
-      if (error.message === "Sign in first.") {
-        return;
-      }
-      liveStatusEl.textContent = "Sync delayed";
-      liveStatusEl.classList.remove("online");
+async function syncPresence() {
+  try {
+    const state = await api("/api/presence", { method: "POST" });
+    render(state);
+  } catch (error) {
+    if (error.message === "Sign in first.") {
+      return;
     }
+    liveStatusEl.textContent = "Sync delayed";
+    liveStatusEl.classList.remove("online");
   }
 }
 
