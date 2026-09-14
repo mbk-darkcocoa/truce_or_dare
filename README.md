@@ -14,6 +14,8 @@ Truce or Dare is a small MVP for starting lightweight social game sessions and c
 - includes an ops chat surface for live coordination
 - includes an Ironclad command center with telemetry and beacons
 - includes Terraform deployment metadata under `/home/runner/work/truce_or_dare/truce_or_dare/terraform`
+- includes installable PWA assets for a faster “Instaweb” experience
+- includes a Dockerfile for simple web deployment
 
 This MVP does **not** send real emails or contact third parties automatically. It stores pending invites locally so the flow can be reviewed safely before any real integration work.
 
@@ -59,6 +61,16 @@ npm start
 
 Open `http://localhost:3000`.
 
+## PWA
+
+The web app now includes:
+
+- `/home/runner/work/truce_or_dare/truce_or_dare/public/manifest.webmanifest`
+- `/home/runner/work/truce_or_dare/truce_or_dare/public/service-worker.js`
+- `/home/runner/work/truce_or_dare/truce_or_dare/public/icon.svg`
+
+Supported browsers can install the app for a standalone experience.
+
 ## Development
 
 ```bash
@@ -76,6 +88,16 @@ terraform plan -var="public_url=http://localhost:3000"
 ```
 
 The Terraform files expose deployment metadata and Ironclad configuration for handoff into a fuller infrastructure stack.
+
+## Deploy on the web
+
+For a simple containerized deployment:
+
+```bash
+cd /home/runner/work/truce_or_dare/truce_or_dare
+docker build -t truce-or-dare .
+docker run -p 3000:3000 truce-or-dare
+```
 
 ## Running as a service on Kali
 
@@ -99,6 +121,8 @@ curl http://127.0.0.1:3000/health
 - `/home/runner/work/truce_or_dare/truce_or_dare/lib/app.js` - core domain logic
 - `/home/runner/work/truce_or_dare/truce_or_dare/lib/store.js` - JSON persistence
 - `/home/runner/work/truce_or_dare/truce_or_dare/public/` - frontend assets
+- `/home/runner/work/truce_or_dare/truce_or_dare/public/service-worker.js` - offline caching
+- `/home/runner/work/truce_or_dare/truce_or_dare/public/manifest.webmanifest` - installable PWA metadata
 - `/home/runner/work/truce_or_dare/truce_or_dare/terraform/` - Terraform deployment metadata
 - `/home/runner/work/truce_or_dare/truce_or_dare/tests/` - unit tests
 

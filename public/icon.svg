@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Truce or Dare">
+  <defs>
+    <linearGradient id="g" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="#111827"/>
+  <path d="M64 72h128v28h-50v84h-28v-84H64z" fill="url(#g)"/>
+  <circle cx="86" cy="182" r="18" fill="#34d399"/>
+  <circle cx="170" cy="182" r="18" fill="#60a5fa"/>
+</svg>

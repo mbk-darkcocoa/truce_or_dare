@@ -6,18 +6,40 @@
     <meta name="theme-color" content="#111827" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Truce or Dare" />
     <title>Truce or Dare</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main class="page">
-      <section class="hero card">
+      <header class="topbar card">
+        <div>
+          <p class="eyebrow">Instaweb command surface</p>
+          <strong>Truce or Dare</strong>
+        </div>
+        <nav class="nav">
+          <a href="#overview">Overview</a>
+          <a href="#ironclad">Ironclad</a>
+          <a href="#play">Play</a>
+          <a href="#connect">Connect</a>
+        </nav>
+        <button type="button" id="install-button" class="secondary hidden">Install app</button>
+      </header>
+
+      <section class="hero card" id="overview">
         <p class="eyebrow">Consent-first social play</p>
         <h1>Truce or Dare</h1>
         <p>
           An Apple iOS-friendly MVP for creating profiles, starting sessions, adding known users,
           and attempting opt-in connections without sending real outbound email.
         </p>
+        <div class="hero-actions">
+          <a class="button-link" href="#play">Start playing</a>
+          <a class="button-link secondary-link" href="#ironclad">Open Ironclad</a>
+        </div>
       </section>
 
       <section class="card live-card">
@@ -34,7 +56,7 @@
 
       <section class="stats" id="summary"></section>
 
-      <section class="grid ironclad-grid">
+      <section class="grid ironclad-grid" id="ironclad">
         <article class="card ironclad-card">
           <div class="ironclad-header">
             <div>
@@ -71,7 +93,7 @@
         </article>
       </section>
 
-      <section class="grid">
+      <section class="grid" id="play">
         <article class="card">
           <h2>1. Sign in</h2>
           <form id="login-form" class="stack">
@@ -117,7 +139,7 @@
         </article>
       </section>
 
-      <section class="grid">
+      <section class="grid" id="connect">
         <article class="card">
           <h2>3. Start a session</h2>
           <form id="session-form" class="stack">

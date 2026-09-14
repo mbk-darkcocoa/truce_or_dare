@@ -24,6 +24,7 @@ body {
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   background: linear-gradient(180deg, var(--bg), #020617);
   color: var(--text);
+  line-height: 1.5;
 }
 
 .page {
@@ -34,6 +35,46 @@ body {
     calc(1rem + env(safe-area-inset-right))
     calc(4rem + env(safe-area-inset-bottom))
     calc(1rem + env(safe-area-inset-left));
+}
+
+.topbar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: max(0.75rem, env(safe-area-inset-top));
+  z-index: 10;
+  backdrop-filter: blur(18px);
+}
+
+.nav {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.nav a,
+.button-link {
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #02131c;
+  font-weight: 700;
+}
+
+.secondary-link {
+  background: transparent;
+  color: var(--text);
 }
 
 .grid,
@@ -64,7 +105,7 @@ body {
   background: color-mix(in srgb, var(--panel) 90%, white);
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 1rem;
+  padding: 1.1rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
@@ -83,6 +124,13 @@ p {
 .stack {
   display: grid;
   gap: 0.75rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 label {
@@ -215,6 +263,7 @@ button.secondary {
 }
 
 @media (max-width: 640px) {
+  .topbar,
   .live-header,
   .ironclad-header,
   .item {
@@ -225,5 +274,10 @@ button.secondary {
   .actions {
     width: 100%;
     justify-content: stretch;
+  }
+
+  .nav,
+  .hero-actions {
+    width: 100%;
   }
 }

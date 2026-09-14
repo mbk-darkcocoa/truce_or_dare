@@ -6,6 +6,7 @@ const ironcladStatusEl = document.querySelector("#ironclad-status");
 const ironcladTelemetryEl = document.querySelector("#ironclad-telemetry");
 const ironcladEventsEl = document.querySelector("#ironclad-events");
 const chatFeedEl = document.querySelector("#chat-feed");
+const installButton = document.querySelector("#install-button");
 const knownUsersEl = document.querySelector("#known-users");
 const receivedInvitesEl = document.querySelector("#received-invites");
 const sentInvitesEl = document.querySelector("#sent-invites");
@@ -20,6 +21,7 @@ const sessionForm = document.querySelector("#session-form");
 const targetUserForm = document.querySelector("#target-user-form");
 const inviteForm = document.querySelector("#invite-form");
 const LIVE_REFRESH_MS = 15000;
+let deferredInstallPrompt = null;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -68,6 +70,18 @@ async function api(path, options = {}) {
   const payload = await response.json();
   if (!response.ok) {
     throw new Error(payload.error || "Request failed.");
+  }
+
+  async function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) {
+      return;
+    }
+
+    try {
+      await navigator.serviceWorker.register("/service-worker.js");
+    } catch {
+      // ignore failed PWA registration
+    }
   }
   return payload;
 }
@@ -324,6 +338,10 @@ function render(state) {
   attachInviteActions();
 }
 
+function setInstallPromptAvailability(isAvailable) {
+  installButton.classList.toggle("hidden", !isAvailable);
+}
+
 async function refresh(message) {
   const state = await api("/api/state");
   render(state);
@@ -469,6 +487,31 @@ inviteForm.addEventListener("submit", async (event) => {
 });
 
 refresh().catch((error) => setFlash(error.message, true));
+registerServiceWorker();
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  setInstallPromptAvailability(true);
+});
+
+installButton.addEventListener("click", async () => {
+  if (!deferredInstallPrompt) {
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  setInstallPromptAvailability(false);
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  setInstallPromptAvailability(false);
+  setFlash("App installed.");
+});
+
 setInterval(() => {
   if (document.visibilityState === "visible") {
     syncPresence();

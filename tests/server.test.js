@@ -139,3 +139,33 @@ test("server supports login, presence, target user creation, chat, beacons, and 
     resetStore();
   }
 });
+
+test("server serves PWA assets for web deployment", async () => {
+  resetStore();
+  const serverPath = require.resolve(path.join(__dirname, "..", "server.js"));
+  delete require.cache[serverPath];
+  const { server } = require(serverPath);
+
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+
+  try {
+    const address = server.address();
+    const baseUrl = `http://127.0.0.1:${address.port}`;
+
+    const manifestResponse = await fetch(`${baseUrl}/manifest.webmanifest`);
+    assert.equal(manifestResponse.status, 200);
+    assert.match(
+      manifestResponse.headers.get("content-type"),
+      /application\/manifest\+json/,
+    );
+
+    const serviceWorkerResponse = await fetch(`${baseUrl}/service-worker.js`);
+    assert.equal(serviceWorkerResponse.status, 200);
+    assert.match(serviceWorkerResponse.headers.get("content-type"), /application\/javascript/);
+  } finally {
+    await new Promise((resolve, reject) => {
+      server.close((error) => (error ? reject(error) : resolve()));
+    });
+    resetStore();
+  }
+});
