@@ -1,16 +1,22 @@
 {
-  "name": "truce_or_dare",
+  "name": "truce-or-dare",
   "version": "1.0.0",
-  "description": "Unified cisagov monorepo with UNICITE IRS framework, autonomous governance, and checks &amp; balances",
-  "main": "index.js",
+  "description": "Minimal Truce or Dare MVP with demo auth, sessions, and consent-based invites",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
     "url": "http://localhost:26831/mbk-darkcocoa/truce_or_dare"
   },
-  "keywords": [],
+  "keywords": [
+    "truce",
+    "dare",
+    "mvp"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
