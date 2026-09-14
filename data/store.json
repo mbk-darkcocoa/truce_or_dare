@@ -1,49 +1,49 @@
 {
   "users": [
     {
-      "id": "24d23f02-e576-4d61-af3a-9b3cf276c9e8",
+      "id": "94a99b49-1b8b-4545-b184-772d2e03025d",
       "displayName": "Ting",
       "handle": "@ting",
       "email": "ting@example.com",
       "bio": "",
-      "createdAt": "2026-09-14T09:47:43.641Z",
-      "updatedAt": "2026-09-14T09:47:43.654Z",
-      "lastActiveAt": "2026-09-14T09:47:43.654Z"
+      "createdAt": "2026-09-14T09:50:34.256Z",
+      "updatedAt": "2026-09-14T09:50:34.271Z",
+      "lastActiveAt": "2026-09-14T09:50:34.271Z"
     },
     {
-      "id": "b6a8da16-0bf6-43a5-9407-092ac47a2c76",
+      "id": "86cd463e-2c75-47dd-86e5-38f251f754ac",
       "displayName": "Glenn",
       "handle": "@glenn",
       "email": "glenn@example.com",
       "bio": "",
-      "createdAt": "2026-09-14T09:47:43.651Z",
-      "updatedAt": "2026-09-14T09:47:43.661Z",
-      "lastActiveAt": "2026-09-14T09:47:43.661Z"
+      "createdAt": "2026-09-14T09:50:34.266Z",
+      "updatedAt": "2026-09-14T09:50:34.279Z",
+      "lastActiveAt": "2026-09-14T09:50:34.279Z"
     }
   ],
   "invites": [
     {
-      "id": "682a538c-7306-4107-94a8-8086c9297fd7",
-      "senderUserId": "24d23f02-e576-4d61-af3a-9b3cf276c9e8",
+      "id": "65252892-4471-4336-917f-7bece2e90882",
+      "senderUserId": "94a99b49-1b8b-4545-b184-772d2e03025d",
       "recipientType": "email",
       "recipientValue": "glenn@example.com",
       "message": "Please test the local flow.",
       "consentConfirmed": true,
       "status": "accepted",
-      "createdAt": "2026-09-14T09:47:43.651Z",
-      "acceptedByUserId": "b6a8da16-0bf6-43a5-9407-092ac47a2c76",
-      "updatedAt": "2026-09-14T09:47:43.661Z"
+      "createdAt": "2026-09-14T09:50:34.267Z",
+      "acceptedByUserId": "86cd463e-2c75-47dd-86e5-38f251f754ac",
+      "updatedAt": "2026-09-14T09:50:34.279Z"
     }
   ],
   "connections": [
     {
-      "id": "c147387c-f683-4a16-a3c1-128b7f4177c0",
+      "id": "53307357-a9b7-4db6-ace4-5fb35a975074",
       "userIds": [
-        "24d23f02-e576-4d61-af3a-9b3cf276c9e8",
-        "b6a8da16-0bf6-43a5-9407-092ac47a2c76"
+        "94a99b49-1b8b-4545-b184-772d2e03025d",
+        "86cd463e-2c75-47dd-86e5-38f251f754ac"
       ],
-      "sourceInviteId": "682a538c-7306-4107-94a8-8086c9297fd7",
-      "createdAt": "2026-09-14T09:47:43.661Z"
+      "sourceInviteId": "65252892-4471-4336-917f-7bece2e90882",
+      "createdAt": "2026-09-14T09:50:34.279Z"
     }
   ],
   "gameSessions": []
