@@ -1,6 +1,7 @@
 const summaryEl = document.querySelector("#summary");
 const flashEl = document.querySelector("#flash");
 const currentUserEl = document.querySelector("#current-user");
+const liveStatusEl = document.querySelector("#live-status");
 const knownUsersEl = document.querySelector("#known-users");
 const receivedInvitesEl = document.querySelector("#received-invites");
 const sentInvitesEl = document.querySelector("#sent-invites");
@@ -12,6 +13,7 @@ const profileForm = document.querySelector("#profile-form");
 const sessionForm = document.querySelector("#session-form");
 const targetUserForm = document.querySelector("#target-user-form");
 const inviteForm = document.querySelector("#invite-form");
+const LIVE_REFRESH_MS = 15000;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -32,6 +34,19 @@ function clearFlash() {
   flashEl.textContent = "";
   flashEl.classList.add("hidden");
   flashEl.classList.remove("error");
+}
+
+function formatLastSeen(value) {
+  if (!value) {
+    return "offline";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "offline";
+  }
+
+  return `last active ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
 }
 
 async function api(path, options = {}) {
@@ -65,6 +80,8 @@ function renderCurrentUser(user) {
     currentUserEl.classList.add("hidden");
     currentUserEl.innerHTML = "";
     profileForm.reset();
+    liveStatusEl.textContent = "Signed out";
+    liveStatusEl.classList.remove("online");
     return;
   }
 
@@ -73,8 +90,11 @@ function renderCurrentUser(user) {
     <h3>${escapeHtml(user.displayName)} <span class="muted">${escapeHtml(user.handle)}</span></h3>
     <p>${escapeHtml(user.bio || "No bio yet.")}</p>
     <p class="muted">${escapeHtml(user.email || "No email connected.")}</p>
+    <p class="muted">${user.isOnline ? "Online now" : escapeHtml(formatLastSeen(user.lastActiveAt))}</p>
     <button type="button" id="logout-button" class="secondary">Log out</button>
   `;
+  liveStatusEl.textContent = "Live sync on";
+  liveStatusEl.classList.add("online");
 
   profileForm.displayName.value = user.displayName;
   profileForm.handle.value = user.handle;
@@ -103,7 +123,9 @@ function renderKnownUsers(users) {
             <strong>${escapeHtml(user.displayName)}</strong>
             <p>${escapeHtml(user.handle)}</p>
             <p class="muted">${escapeHtml(user.email || "No email")}</p>
+            <p class="muted">${user.isOnline ? "Online now" : escapeHtml(formatLastSeen(user.lastActiveAt))}</p>
           </div>
+          <span class="status-dot${user.isOnline ? " online" : ""}" aria-hidden="true"></span>
         </div>
       `,
     )
@@ -121,6 +143,9 @@ function renderInvites(container, invites, emptyMessage, actionLabel) {
   container.innerHTML = invites
     .map((invite) => {
       const title = invite.senderHandle || invite.recipientValue;
+      const githubNudge = invite.githubNudge
+        ? `<button type="button" class="secondary" data-nudge-text="${escapeHtml(invite.githubNudge.text)}">Copy GitHub nudge</button>`
+        : "";
       const actionButton = actionLabel
         ? `<button type="button" data-invite-id="${escapeHtml(invite.id)}">${escapeHtml(actionLabel)}</button>`
         : "";
@@ -130,9 +155,14 @@ function renderInvites(container, invites, emptyMessage, actionLabel) {
             <strong>${escapeHtml(title)}</strong>
             <p>${escapeHtml(invite.recipientType)} · ${escapeHtml(invite.recipientValue)}</p>
             <p>${escapeHtml(invite.message || "No message.")}</p>
+            ${
+              invite.matchedUser
+                ? `<p class="muted">${escapeHtml(invite.matchedUser.handle)} · ${invite.recipientOnline ? "online now" : escapeHtml(formatLastSeen(invite.matchedUser.lastActiveAt))}</p>`
+                : ""
+            }
             <p class="muted">${escapeHtml(invite.status)}</p>
           </div>
-          ${actionButton}
+          <div class="actions">${actionButton}${githubNudge}</div>
         </div>
       `;
     })
@@ -199,6 +229,17 @@ function attachInviteActions() {
       }
     });
   });
+
+  sentInvitesEl.querySelectorAll("[data-nudge-text]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.nudgeText);
+        setFlash("GitHub-ready nudge copied.");
+      } catch (error) {
+        setFlash(error.message || "Unable to copy nudge.", true);
+      }
+    });
+  });
 }
 
 function render(state) {
@@ -219,6 +260,19 @@ async function refresh(message) {
     setFlash(message);
   } else {
     clearFlash();
+  }
+
+  async function syncPresence() {
+    try {
+      const state = await api("/api/presence", { method: "POST" });
+      render(state);
+    } catch (error) {
+      if (error.message === "Sign in first.") {
+        return;
+      }
+      liveStatusEl.textContent = "Sync delayed";
+      liveStatusEl.classList.remove("online");
+    }
   }
 }
 
@@ -310,3 +364,8 @@ inviteForm.addEventListener("submit", async (event) => {
 });
 
 refresh().catch((error) => setFlash(error.message, true));
+setInterval(() => {
+  if (document.visibilityState === "visible") {
+    syncPresence();
+  }
+}, LIVE_REFRESH_MS);

@@ -9,6 +9,8 @@ Truce or Dare is a small MVP for starting lightweight social game sessions and c
 - sends connection invites to a handle or email address
 - requires explicit consent before an invite can be created
 - lets matching signed-in users accept pending invites
+- shows online tester presence through background sync
+- prepares copyable GitHub-ready nudges for handle-based invites
 
 This MVP does **not** send real emails or contact third parties automatically. It stores pending invites locally so the flow can be reviewed safely before any real integration work.
 

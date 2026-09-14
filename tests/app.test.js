@@ -3,11 +3,14 @@ const assert = require("node:assert/strict");
 
 const {
   acceptInvite,
+  buildDashboard,
   createGameSession,
   createInvite,
   createTargetUser,
   ensureState,
+  isUserOnline,
   normalizeHandle,
+  touchUser,
   upsertUser,
   updateProfile,
 } = require("../lib/app");
@@ -111,6 +114,41 @@ test("createTargetUser can also attempt a connection", () => {
   assert.equal(state.users.length, 2);
   assert.equal(state.invites.length, 1);
   assert.equal(state.invites[0].recipientType, "email");
+});
+
+test("createTargetUser rejects self-targeting", () => {
+  const state = createState();
+  const sender = upsertUser(state, { displayName: "Ting", handle: "ting", email: "" });
+
+  assert.throws(
+    () =>
+      createTargetUser(state, sender.id, {
+        displayName: "Still Ting",
+        handle: "@ting",
+        attemptConnection: false,
+      }),
+    /cannot add yourself/,
+  );
+});
+
+test("touchUser marks a user online and dashboard exposes a GitHub-ready nudge", () => {
+  const state = createState();
+  const sender = upsertUser(state, { displayName: "Ting", handle: "ting", email: "" });
+  const recipient = upsertUser(state, { displayName: "Glenn", handle: "glenn", email: "" });
+
+  createInvite(state, sender.id, {
+    recipientType: "handle",
+    recipientValue: "@glenn",
+    consentConfirmed: true,
+    message: "Please test the local flow.",
+  });
+  touchUser(state, recipient.id);
+
+  const dashboard = buildDashboard(state, sender.id);
+
+  assert.equal(isUserOnline(recipient), true);
+  assert.equal(dashboard.knownUsers[0].isOnline, true);
+  assert.match(dashboard.sentInvites[0].githubNudge.text, /@glenn/);
 });
 
 test("acceptInvite creates a connection for a matching recipient", () => {

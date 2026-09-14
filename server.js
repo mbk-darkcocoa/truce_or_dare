@@ -14,6 +14,7 @@ const {
   upsertUser,
   updateProfile,
   acceptInvite,
+  touchUser,
 } = require("./lib/app");
 const { loadState, mutateState } = require("./lib/store");
 
@@ -134,7 +135,13 @@ function clearSession(req) {
 }
 
 function stateResponse(currentUser) {
-  const state = ensureState(loadState());
+  const state = currentUser
+    ? mutateState((currentState) => {
+        touchUser(currentState, currentUser.id);
+        return ensureState(currentState);
+      })
+    : ensureState(loadState());
+
   if (!currentUser) {
     return listPublicSummary(state);
   }
@@ -186,6 +193,20 @@ async function handleApi(req, res, url) {
   if (req.method === "POST" && url.pathname === "/api/profile") {
     const user = requireUser(req, res);
     if (!user) {
+      return true;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/presence") {
+      const user = requireUser(req, res);
+      if (!user) {
+        return true;
+      }
+
+      const dashboard = mutateState((state) => {
+        touchUser(state, user.id);
+        return buildDashboard(state, user.id);
+      });
+      sendJson(res, 200, dashboard);
       return true;
     }
 
