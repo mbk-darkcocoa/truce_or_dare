@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111827" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Truce or Dare" />
+    <title>Truce or Dare</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar card">
+        <div>
+          <p class="eyebrow">Instaweb command surface</p>
+          <strong>Truce or Dare</strong>
+        </div>
+        <nav class="nav">
+          <a href="#overview">Overview</a>
+          <a href="#ironclad">Ironclad</a>
+          <a href="#play">Play</a>
+          <a href="#connect">Connect</a>
+        </nav>
+        <button type="button" id="install-button" class="secondary hidden">Install app</button>
+      </header>
+
+      <section class="hero card" id="overview">
+        <p class="eyebrow">Consent-first social play</p>
+        <h1>Truce or Dare</h1>
+        <p>
+          An Apple iOS-friendly MVP for creating profiles, starting sessions, adding known users,
+          and attempting opt-in connections without sending real outbound email.
+        </p>
+        <div class="hero-actions">
+          <a class="button-link" href="#play">Start playing</a>
+          <a class="button-link secondary-link" href="#ironclad">Open Ironclad</a>
+        </div>
+      </section>
+
+      <section class="card live-card">
+        <div class="live-header">
+          <div>
+            <h2>Live test sync</h2>
+            <p class="muted">
+              This app refreshes in the background and shows who is online for local testing.
+            </p>
+          </div>
+          <p id="live-status" class="status-pill">Checking live sync…</p>
+        </div>
+      </section>
+
+      <section class="stats" id="summary"></section>
+
+      <section class="grid ironclad-grid" id="ironclad">
+        <article class="card ironclad-card">
+          <div class="ironclad-header">
+            <div>
+              <p class="eyebrow">Super computer command center</p>
+              <h2>Ironclad</h2>
+            </div>
+            <p id="ironclad-status" class="status-pill">Standby</p>
+          </div>
+          <div id="ironclad-telemetry" class="stats compact-stats"></div>
+          <form id="ironclad-form" class="stack">
+            <label>
+              Beacon label
+              <input name="label" maxlength="40" placeholder="Ops pulse" required />
+            </label>
+            <label>
+              Beacon detail
+              <textarea name="detail" maxlength="240" rows="3" placeholder="What should operators know?" required></textarea>
+            </label>
+            <button type="submit">Raise Ironclad beacon</button>
+          </form>
+          <div id="ironclad-events" class="stack muted">No Ironclad activity yet.</div>
+        </article>
+
+        <article class="card">
+          <h2>Ops chat</h2>
+          <form id="chat-form" class="stack">
+            <label>
+              Message
+              <textarea name="body" maxlength="280" rows="3" placeholder="Coordinate testing, invites, and session moves." required></textarea>
+            </label>
+            <button type="submit">Send message</button>
+          </form>
+          <div id="chat-feed" class="stack muted">No chat messages yet.</div>
+        </article>
+      </section>
+
+      <section class="grid" id="play">
+        <article class="card">
+          <h2>1. Sign in</h2>
+          <form id="login-form" class="stack">
+            <label>
+              Display name
+              <input name="displayName" maxlength="40" placeholder="Ting" required />
+            </label>
+            <label>
+              Handle
+              <input name="handle" maxlength="31" placeholder="@ting" required />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" maxlength="120" placeholder="Optional" />
+            </label>
+            <button type="submit">Create or resume profile</button>
+          </form>
+
+          <div id="current-user" class="panel hidden"></div>
+        </article>
+
+        <article class="card">
+          <h2>2. Update profile</h2>
+          <form id="profile-form" class="stack">
+            <label>
+              Display name
+              <input name="displayName" maxlength="40" required />
+            </label>
+            <label>
+              Handle
+              <input name="handle" maxlength="31" required />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" maxlength="120" />
+            </label>
+            <label>
+              Bio
+              <textarea name="bio" maxlength="280" rows="4" placeholder="Why you play"></textarea>
+            </label>
+            <button type="submit">Save profile</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="grid" id="connect">
+        <article class="card">
+          <h2>3. Start a session</h2>
+          <form id="session-form" class="stack">
+            <label>
+              Session title
+              <input name="title" maxlength="80" placeholder="Friday reset round" required />
+            </label>
+            <label>
+              Mode
+              <select name="mode">
+                <option value="truce">Truce</option>
+                <option value="dare">Dare</option>
+                <option value="both">Both</option>
+              </select>
+            </label>
+            <label>
+              Stakes
+              <textarea
+                name="stakes"
+                maxlength="240"
+                rows="3"
+                placeholder="What is on the line or what counts as a win?"
+                required
+              ></textarea>
+            </label>
+            <button type="submit">Create session</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <h2>4. Add a target user and attempt a connection</h2>
+          <form id="target-user-form" class="stack">
+            <label>
+              Display name
+              <input name="displayName" maxlength="40" placeholder="Friend name" required />
+            </label>
+            <label>
+              Handle
+              <input name="handle" maxlength="31" placeholder="@friend" required />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" maxlength="120" placeholder="Optional" />
+            </label>
+            <label>
+              Connection message
+              <textarea name="connectionMessage" maxlength="240" rows="3" placeholder="Optional message"></textarea>
+            </label>
+            <label class="consent">
+              <input name="attemptConnection" type="checkbox" />
+              Also create a pending connection invite for this user.
+            </label>
+            <button type="submit">Save target user</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>5. Send a direct connection invite</h2>
+          <form id="invite-form" class="stack">
+            <label>
+              Invite type
+              <select name="recipientType">
+                <option value="handle">Handle</option>
+                <option value="email">Email</option>
+              </select>
+            </label>
+            <label>
+              Handle or email
+              <input name="recipientValue" maxlength="120" placeholder="@friend or name@example.com" required />
+            </label>
+            <label>
+              Message
+              <textarea name="message" maxlength="240" rows="3" placeholder="Optional context"></textarea>
+            </label>
+            <label class="consent">
+              <input name="consentConfirmed" type="checkbox" required />
+              I have permission to create this connection request and understand that this MVP only stores a pending invite.
+            </label>
+            <button type="submit">Create pending invite</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <h2>Known users</h2>
+          <div id="known-users" class="stack muted">No users yet.</div>
+        </article>
+      </section>
+
+      <section class="grid lists">
+        <article class="card">
+          <h2>Received invites</h2>
+          <div id="received-invites" class="stack muted">Sign in to view invites.</div>
+        </article>
+
+        <article class="card">
+          <h2>Sent invites</h2>
+          <div id="sent-invites" class="stack muted">No invites yet.</div>
+        </article>
+      </section>
+
+      <section class="grid lists">
+        <article class="card">
+          <h2>Connections</h2>
+          <div id="connections" class="stack muted">No connections yet.</div>
+        </article>
+
+        <article class="card">
+          <h2>Recent sessions</h2>
+          <div id="recent-sessions" class="stack muted">No sessions yet.</div>
+        </article>
+      </section>
+
+      <p id="flash" class="flash hidden" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

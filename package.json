@@ -1,0 +1,22 @@
+{
+  "name": "truce-or-dare",
+  "version": "1.0.0",
+  "description": "Minimal Truce or Dare MVP with demo auth, sessions, and consent-based invites",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://localhost:26831/mbk-darkcocoa/truce_or_dare"
+  },
+  "keywords": [
+    "truce",
+    "dare",
+    "mvp"
+  ],
+  "author": "",
+  "license": "MIT"
+}

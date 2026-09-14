@@ -1,0 +1,17 @@
+{
+  "name": "Truce or Dare",
+  "short_name": "TruceDare",
+  "description": "Consent-first social play with Ironclad telemetry, ops chat, and live testing flows.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
