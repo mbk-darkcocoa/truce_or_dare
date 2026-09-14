@@ -1,0 +1,19 @@
+[Unit]
+Description=Truce or Dare application server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=truce
+Group=truce
+WorkingDirectory=/opt/truce_or_dare
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=TRUCE_OR_DARE_DATA_PATH=/var/lib/truce-or-dare/store.json
+ExecStart=/usr/bin/node /opt/truce_or_dare/server.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

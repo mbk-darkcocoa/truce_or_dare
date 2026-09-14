@@ -20,6 +20,34 @@ This MVP does **not** send real emails or contact third parties automatically. I
 ## Requirements
 
 - Node.js 22+
+- Terraform 1.5+ (optional, only for deployment metadata validation)
+
+## Kali Linux setup
+
+Use Kali as a normal Linux host for this app. Truce or Dare stays in user space and does not require kernel hooks or privileged security tooling. These instructions are for a real Linux deployment target and do not depend on VMware, Citrix, or a simulation-only workflow.
+
+1. Install Node.js 22+ with your preferred package source for Kali.
+2. Clone the repo to the host.
+3. Run:
+
+```bash
+cd /home/runner/work/truce_or_dare/truce_or_dare
+npm install
+npm test
+npm start
+```
+
+Optional environment variables for Kali or other Linux hosts:
+
+- `PORT` - HTTP port for the app server
+- `TRUCE_OR_DARE_DATA_PATH` - absolute path to the JSON state file
+
+Example:
+
+```bash
+cd /home/runner/work/truce_or_dare/truce_or_dare
+PORT=3100 TRUCE_OR_DARE_DATA_PATH=/var/lib/truce-or-dare/store.json npm start
+```
 
 ## Run locally
 
@@ -49,9 +77,25 @@ terraform plan -var="public_url=http://localhost:3000"
 
 The Terraform files expose deployment metadata and Ironclad configuration for handoff into a fuller infrastructure stack.
 
+## Running as a service on Kali
+
+A sample systemd unit is included at `/home/runner/work/truce_or_dare/truce_or_dare/deploy/systemd/truce-or-dare.service`.
+
+Typical setup flow:
+
+```bash
+sudo mkdir -p /opt/truce_or_dare /var/lib/truce-or-dare
+sudo cp -R /home/runner/work/truce_or_dare/truce_or_dare/* /opt/truce_or_dare/
+sudo cp /home/runner/work/truce_or_dare/truce_or_dare/deploy/systemd/truce-or-dare.service /etc/systemd/system/truce-or-dare.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now truce-or-dare
+curl http://127.0.0.1:3000/health
+```
+
 ## Project structure
 
 - `/home/runner/work/truce_or_dare/truce_or_dare/server.js` - HTTP server and API routing
+- `/home/runner/work/truce_or_dare/truce_or_dare/deploy/systemd/` - sample Linux service unit
 - `/home/runner/work/truce_or_dare/truce_or_dare/lib/app.js` - core domain logic
 - `/home/runner/work/truce_or_dare/truce_or_dare/lib/store.js` - JSON persistence
 - `/home/runner/work/truce_or_dare/truce_or_dare/public/` - frontend assets
@@ -60,5 +104,7 @@ The Terraform files expose deployment metadata and Ironclad configuration for ha
 
 ## Notes
 
-- Data is stored in `/home/runner/work/truce_or_dare/truce_or_dare/data/store.json`
+- Data defaults to `/home/runner/work/truce_or_dare/truce_or_dare/data/store.json`
+- Set `TRUCE_OR_DARE_DATA_PATH` to move the state file on Kali or other Linux hosts
 - This repo intentionally avoids real outbound messaging until consent and delivery integrations are fully designed
+- This app does not add kernel hooks, privileged login automation, or offensive security behavior

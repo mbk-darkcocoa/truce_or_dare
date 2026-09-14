@@ -3,7 +3,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 
-const { STORE_PATH, saveState } = require("../lib/store");
+const { getStorePath, saveState } = require("../lib/store");
 
 function resetStore() {
   saveState({
@@ -128,7 +128,7 @@ test("server supports login, presence, target user creation, chat, beacons, and 
     const acceptedState = await acceptResponse.json();
     assert.equal(acceptedState.connections.length, 1);
 
-    const storedState = JSON.parse(fs.readFileSync(STORE_PATH, "utf8"));
+    const storedState = JSON.parse(fs.readFileSync(getStorePath(), "utf8"));
     assert.equal(storedState.connections.length, 1);
     assert.equal(storedState.chatMessages.length, 1);
     assert.equal(storedState.ironcladEvents.length >= 1, true);
